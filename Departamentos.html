@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramon Y Tomas Propiedades</title>
+    <link rel="stylesheet" href="./departamentos-css.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script><!--imports jQuery library into your project-->
+</head>
+<body>
+    <header>
+        <img src="logo.jpeg" alt="" id="logo">
+        <div id="grupo">
+            <h1 id="tittulo">Ramon Y Tomas Propiedades </h1><!--El color de la letra se controla en el css en la seccion body-->
+            <h2 id="Lema">Encontrar tu hogar</h2>
+        </div>
+    </header>
+    <nav>
+        <a href="Casas.html">Casas</a>
+        <a href="Departamentos.html" id="seleccionado">Departamentos</a>
+    </nav>
+    <div id="alquiler"><!-- El div llamado 'alquiler' crea la caja que engloba a las imágenes de los departamentos en alquiler-->
+        <h2 id="Alquileres">Departamentos en Alquiler</h2><!--título de la sección del div-->
+        <div class="container">
+            <div class="text-container" data-ambientes="1" data-zona="CABA">
+                <img id="dept1" src="./dept 1.png" alt="">
+                <h4>$150.000 por mes</h4>
+            </div>
+            <div class="text-container" data-ambientes="2" data-zona="zona norte">
+                <img id="dept2" src="./dept 2.jpg" alt="">
+                <h4>$100.000 por mes</h4>
+            </div>
+            <div class="text-container" data-ambientes="3" data-zona="zona sur">
+                <img id="dept3" src="./dept 3.jpg" alt="">
+                <h4>$100.000 por mes</h4>
+            </div>
+            <div class="text-container" data-ambientes="1" data-zona="zona oeste">
+                <img id="dept4" src="./dept 4.jpg" alt="">
+                <h4>$120.000 por mes</h4>
+            </div>
+            <!-- Agrega los demás departamentos con sus respectivos datos -->
+            <!-- ... -->
+        </div>
+    </div>
+
+    <div id="ventas">
+        <h2 id="ventasTitulo">Departamentos en Venta</h2>
+        <div class="container">
+            <div class="text-container" data-ambientes="1" data-zona="CABA">
+                <img id="dept11" src="dept 11.jpg" alt="">
+                <h4>$2.000.000 precio</h4>
+            </div>
+            <div class="text-container" data-ambientes="2" data-zona="zona norte">
+                <img id="dept9" src="dept 9.jpg" alt="">
+                <h4>$3.000.000 precio</h4>
+            </div>
+            <!-- Agrega los demás departamentos con sus respectivos datos -->
+            <!-- ... -->
+        </div>
+    </div>
+
+    <div id="formulario">
+        <form id="filterForm">
+            <label id="Ambientes" for="ambientes2">Ambientes</label>
+            <select name="ambientes" id="ambientes2">
+                <option value="">Todos</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+
+            <label id="zonas" for="zonas2">Zonas</label>
+            <select name="zonas" id="zonas2">
+                <option value="">Todas</option>
+                <option value="CABA">CABA</option>
+                <option value="zona norte">zona norte</option>
+                <option value="zona sur">zona sur</option>
+                <option value="zona oeste">zona oeste</option>
+            </select>
+        </form>
+    </div>
+    <hr>
+    <footer id="pie-de-pagina">
+        <ul id="pagina">
+            <li id="facebook">Nos encontraran en facebook: RamonYTomas</li>
+            <li id="whattsApp">Nos puede conctactar por whattsApp: 11-6789-2354</li>
+            <li id="mail3">Por mail como: RamonYTomas@gmail.com</li>
+            <li id="Instragram">Y por Instagram como: Ramon@Tomas</li>
+        </ul>
+    </footer>
+
+    <!--PARA Q FORMULARIOS MUESTRE DIF CASAS O DEPT --><!--PARA Q FORMULARIOS MUESTRE DIF CASAS O DEPT --><!--PARA Q FORMULARIOS MUESTRE DIF CASAS O DEPT --><!--PARA Q FORMULARIOS MUESTRE DIF CASAS O DEPT -->
+    <script>
+        $(document).ready(function() {
+            function getURLParams() {
+                const params = {};
+                window.location.search.substring(1).split('&').forEach(function(pair) {
+                    const [key, value] = pair.split('=');
+                    params[decodeURIComponent(key)] = decodeURIComponent(value);
+                });
+                return params;
+            }
+
+            function filterContent() {
+                const selectedAmbientes = $('#ambientes2').val();
+                const selectedZona = $('#zonas2').val();
+
+                $('.text-container').show();
+
+                $('.text-container').each(function() {
+                    const containerAmbientes = $(this).data('ambientes');
+                    const containerZona = $(this).data('zona');
+                    let showContainer = true;
+
+                    if (selectedAmbientes && selectedZona) {
+                        showContainer = selectedAmbientes == containerAmbientes && selectedZona == containerZona;
+                    } else if (selectedAmbientes) {
+                        showContainer = selectedAmbientes == containerAmbientes;
+                    } else if (selectedZona) {
+                        showContainer = selectedZona == containerZona;
+                    }
+
+                    if (!showContainer) {
+                        $(this).hide();
+                    }
+                });
+
+                if ($('.text-container:visible').length === 0) {
+                    $('#resultado').text('No se encontraron resultados');
+                } else {
+                    $('#resultado').empty();
+                }
+            }
+
+            function applyURLFilters() {
+                const params = getURLParams();
+                if (params.ambientes) {
+                    $('#ambientes2').val(params.ambientes);
+                }
+                if (params.zona) {
+                    $('#zonas2').val(params.zona);
+                }
+                filterContent();
+            }
+
+            $('#filterForm select').on('change', filterContent);
+            applyURLFilters();
+        });
+    </script>
+</body>
+</html>
